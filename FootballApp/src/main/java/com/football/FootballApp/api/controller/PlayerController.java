@@ -15,12 +15,12 @@ public class PlayerController {
     private PlayerService playerService;
 
     @Autowired
-    public PlayerController(PlayerService playerService){
+    public PlayerController(PlayerService playerService) {
         this.playerService = playerService;
     }
 
     @GetMapping("/player")
- public Player getPlayer(){
-        return playerService.getPlayer();
+    public Player getPlayer(@RequestParam String name) {
+        return playerService.getPlayer(name);
     }
 }
