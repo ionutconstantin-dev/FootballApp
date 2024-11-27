@@ -8,16 +8,17 @@ import lombok.Setter;
 public class Player {
 
     private int id;
-    private String firstName;
-    private String lastName;
+    private String name;
     private int age;
-    private String club;
+    private String nationality;
 
-    public Player(int id, String firstName, String lastName, int age, String club) {
+    public Player() {
+    }
+
+    public Player(int id, String name, int age, String nationality) {
         this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.name = name;
         this.age = age;
-        this.club = club;
+        this.nationality = nationality;
     }
 }

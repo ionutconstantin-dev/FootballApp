@@ -21,4 +21,6 @@ public class PlayerController {
     public Player getPlayer(@RequestParam String name) {
         return playerService.getPlayer(name);
     }
+
+
 }
