@@ -101,7 +101,7 @@ curl http://localhost:8080/players?name=Messi
 
 If you have any questions or suggestions, feel free to reach out:
 
-- **Email**: ionutconstantin.dev@example.com
+- **Email**: ionutconstantin.dev@gmail.com
 - **GitHub**: [ionutconstantin-dev](https://github.com/ionutconstantin-dev)
 
 ---
