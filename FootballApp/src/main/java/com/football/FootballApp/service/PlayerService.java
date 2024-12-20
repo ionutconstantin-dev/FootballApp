@@ -3,17 +3,14 @@ package com.football.FootballApp.service;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.football.FootballApp.Constants;
 import com.football.FootballApp.model.Player;
 import org.springframework.stereotype.Service;
-
 import java.net.URI;
-import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.nio.charset.StandardCharsets;
+
 
 @Service
 public class PlayerService {
@@ -24,41 +21,26 @@ public class PlayerService {
         this.gson = gson;
     }
 
-    public Player getPlayer(String name) {
-        try {
-            // Encode the player name
-            String encodedName = URLEncoder.encode(name, StandardCharsets.UTF_8);
+    public Player getPlayer(String name) throws Exception {
 
-            // Build the API URL
-            String url = "https://v3.football.api-sports.io/players/profiles?search=" + encodedName;
+        String endpoint = "https://v3.football.api-sports.io/players/profiles?search=" + name;
+        HttpRequest httpRequest = HttpRequest.newBuilder()
+                .uri(URI.create(endpoint))
+                .header("x-rapidapi-key", Constants.API_KEY)
+                .header("x-rapidapi-host", "v3.football.api-sports.io")
+                .GET()
+                .build();
 
-            // Create HTTP request
-            HttpRequest getRequest = HttpRequest.newBuilder()
-                    .uri(new URI(url))
-                    .header("x-rapidapi-key", Constants.API_KEY)
-                    .header("x-rapidapi-host", "v3.football.api-sports.io")
-                    .GET()
-                    .build();
+        HttpClient httpClient = HttpClient.newHttpClient();
+        HttpResponse<String> httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
 
-            // Send the request and receive the response
-            HttpClient httpClient = HttpClient.newHttpClient();
-            HttpResponse<String> response = httpClient.send(getRequest, HttpResponse.BodyHandlers.ofString());
+        JsonObject jsonObject = gson.fromJson(httpResponse.body(), JsonObject.class);
 
-            // Parse the JSON response
-            JsonObject jsonResponse = JsonParser.parseString(response.body()).getAsJsonObject();
-            JsonArray playersArray = jsonResponse.getAsJsonArray("response");
+        JsonArray jsonArrayResponse = jsonObject.getAsJsonArray("response");
 
-            // Ensure there's at least one player in the response
-            if (playersArray != null && playersArray.size() > 0) {
-                JsonObject playerJson = playersArray.get(0).getAsJsonObject().getAsJsonObject("player");
+        JsonObject playerObject = jsonArrayResponse.get(0).getAsJsonObject().getAsJsonObject("player");
+        Player player = gson.fromJson(playerObject, Player.class);
 
-                // Map the JSON object to the Player model
-                return gson.fromJson(playerJson, Player.class);
-            } else {
-                throw new RuntimeException("No players found for the given name.");
-            }
-        } catch (Exception e) {
-            throw new RuntimeException("Error fetching player data", e);
-        }
+        return player;
     }
 }

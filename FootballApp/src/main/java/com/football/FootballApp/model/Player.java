@@ -1,10 +1,14 @@
 package com.football.FootballApp.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Player {
 
     private int id;
@@ -12,13 +16,5 @@ public class Player {
     private int age;
     private String nationality;
 
-    public Player() {
-    }
 
-    public Player(int id, String name, int age, String nationality) {
-        this.id = id;
-        this.name = name;
-        this.age = age;
-        this.nationality = nationality;
-    }
 }
