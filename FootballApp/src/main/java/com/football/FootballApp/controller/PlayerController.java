@@ -21,6 +21,4 @@ public class PlayerController {
     public Player getPlayer(@RequestParam String name) throws Exception {
         return playerService.getPlayer(name);
     }
-
-
 }
